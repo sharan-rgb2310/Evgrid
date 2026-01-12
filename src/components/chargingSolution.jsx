@@ -61,7 +61,7 @@ export default function ChargingSolutions() {
           <img
             src={chargingImg}
             alt="EV Charging"
-            className="rounded-3xl w-full object-cover"
+            className="rounded-3xl w-full object-cover h-85"
           />
 
           {/* HAPPY CUSTOMERS CARD */}
