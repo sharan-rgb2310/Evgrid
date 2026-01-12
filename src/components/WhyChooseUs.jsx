@@ -11,7 +11,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="flex flex-col md:flex-row items-stretch w-full min-h-[600px] bg-white">
+    <section className="flex flex-col md:flex-row items-stretch w-full min-h-150 bg-white">
       
       {/* Left Content Column */}
       <div className="w-full md:w-1/2 px-6 py-12 md:p-16 lg:p-24 flex flex-col justify-center">
@@ -26,7 +26,7 @@ const WhyChooseUs = () => {
             {benefits.map((text, index) => (
               <li key={index} className="flex items-center gap-3">
                 {/* Custom Green matching your "Get Started" button */}
-                <CheckCircle2 className="text-[#5cb85c] w-6 h-6 flex-shrink-0" />
+                <CheckCircle2 className="text-[#5cb85c] w-6 h-6 shrink-0" />
                 <span className="text-gray-700 text-lg font-medium">{text}</span>
               </li>
             ))}
@@ -50,7 +50,7 @@ const WhyChooseUs = () => {
       {/* Right Image Column - Refactored for Rounded Corners */}
       <div className="w-full md:w-1/2 p-4 md:p-6 lg:p-8"> 
         {/* container p-8 creates the spacing around the image to show the rounded edges */}
-        <div className="relative w-full h-[400px] md:h-full overflow-hidden rounded-[40px] shadow-2xl">
+        <div className="relative w-full h-100 md:h-full overflow-hidden rounded-[40px] shadow-2xl">
           <img 
             src={carImage} 
             alt="Expertise presentation" 

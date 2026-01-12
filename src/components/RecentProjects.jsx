@@ -33,7 +33,7 @@ export default function RecentProjects() {
 
   return (
     <section className="w-full py-20 bg-white">
-      <div className="max-w-[1320px] mx-auto px-4 md:px-6">
+      <div className="max-w-330 mx-auto px-4 md:px-6">
         
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
@@ -47,7 +47,7 @@ export default function RecentProjects() {
           </div>
 
           <div className="flex items-center gap-8 lg:gap-16">
-            <p className="hidden md:block text-gray-500 max-w-[420px] text-[16px] leading-relaxed">
+            <p className="hidden md:block text-gray-500 max-w-105 text-[16px] leading-relaxed">
               There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.
             </p>
             
@@ -77,7 +77,7 @@ export default function RecentProjects() {
           {projects.map((proj) => (
             <div
               key={proj.id}
-              className="relative flex-shrink-0 w-[280px] md:w-[380px] lg:w-[415px] h-[400px] md:h-[500px] rounded-[40px] overflow-hidden group snap-start"
+              className="relative shrink-0 w-70 md:w-95 lg:w-103.75 h-100 md:h-125 rounded-[40px] overflow-hidden group snap-start"
             >
               {/* Image with Zoom Effect */}
               <img
