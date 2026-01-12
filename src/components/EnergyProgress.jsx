@@ -46,7 +46,7 @@ const CircularProgress = ({ percentage, label }) => {
       </div>
 
       {/* Label on the Right */}
-      <div className="max-w-[120px]">
+      <div className="max-w-30">
         <p className="text-xl font-bold leading-tight text-gray-800">{label}</p>
       </div>
     </div>
