@@ -1,12 +1,11 @@
-import { useState } from 'react'
-import './App.css'
+import NavBar from "./components/NavBar";
+import Home from "./pages/Home";
 
-function App() {
-  
+export default function App() {
   return (
-    <>
-    </>
-  )
+    <div className="font-sans">
+      <NavBar />
+      <Home />
+    </div>
+  );
 }
-
-export default App
