@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "framer-motion": "^12.26.0",
     "@tailwindcss/vite": "^4.1.18",
     "framer-motion": "^12.26.1",
     "lucide-react": "^0.562.0",

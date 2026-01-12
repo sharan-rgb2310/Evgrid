@@ -11,11 +11,12 @@ export default function App() {
     <div className="font-sans">
       <NavBar />
       <Home />
+      <ChargingSolutions/>
       <RecentProjects />
       <EnergyProgress />
       <WhyChooseUs />
       <AppCTA />
-      <ChargingSolutions/>
+      
     </div>
   );
 }
