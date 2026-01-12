@@ -4,6 +4,7 @@ import slide2 from "../images/slide2.png";
 import slide3 from "../images/slide3.png";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 
+
 const slides = [
   {
     image: slide1,
