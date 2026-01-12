@@ -1,3 +1,4 @@
+import ChargingSolutions from "./components/chargingSolution";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import RecentProjects from "./components/recentProjects";
@@ -14,6 +15,7 @@ export default function App() {
       <EnergyProgress />
       <WhyChooseUs />
       <AppCTA />
+      <ChargingSolutions/>
     </div>
   );
 }
