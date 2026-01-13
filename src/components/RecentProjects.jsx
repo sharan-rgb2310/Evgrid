@@ -4,15 +4,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import picture1 from "../images/project1.png";
 import picture2 from "../images/project2.png";
 import picture3 from "../images/project3.png";
-import picture4 from "../images/project1.png";
-import picture5 from "../images/project2.png";
 
 /* ----------------------------------
-   Constants
+   Config
 ----------------------------------- */
 const CARD_WIDTH = 415;
 const CARD_GAP = 24;
-const SCROLL_STEP = CARD_WIDTH + CARD_GAP;
+const STEP = CARD_WIDTH + CARD_GAP;
 const AUTO_SCROLL_DELAY = 3000;
 
 /* ----------------------------------
@@ -26,7 +24,7 @@ const projects = [
   { id: 5, tag: "EV STATION", title: "Benefits EV-Car", img: picture2 },
 ];
 
-// duplicate data for infinite effect
+// duplicated list for infinite illusion
 const infiniteProjects = [...projects, ...projects];
 
 /* ----------------------------------
@@ -34,45 +32,49 @@ const infiniteProjects = [...projects, ...projects];
 ----------------------------------- */
 export default function RecentProjects() {
   const scrollRef = useRef(null);
-  const scrollPosition = useRef(0);
 
   /* ----------------------------------
-     Scroll handler
+     Scroll helpers
   ----------------------------------- */
   const scrollByStep = (direction = "right") => {
     const container = scrollRef.current;
     if (!container) return;
 
-    const maxScroll = SCROLL_STEP * projects.length;
+    const totalWidth = STEP * projects.length;
+    const offset = direction === "left" ? -STEP : STEP;
 
-    scrollPosition.current +=
-      direction === "left" ? -SCROLL_STEP : SCROLL_STEP;
-
-    // seamless reset (off-screen)
-    if (scrollPosition.current < 0) {
-      scrollPosition.current = maxScroll - SCROLL_STEP;
-      container.scrollLeft = scrollPosition.current;
-      return;
-    }
-
-    if (scrollPosition.current >= maxScroll) {
-      scrollPosition.current = 0;
-      container.scrollLeft = 0;
-      return;
-    }
-
-    container.scrollTo({
-      left: scrollPosition.current,
+    container.scrollBy({
+      left: offset,
       behavior: "smooth",
     });
+
+    // seamless left reset
+    if (direction === "left" && container.scrollLeft <= 0) {
+      container.scrollLeft += totalWidth;
+    }
   };
 
   /* ----------------------------------
-     Auto scroll
+     Auto scroll (infinite)
   ----------------------------------- */
   useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const totalWidth = STEP * projects.length;
+
     const interval = setInterval(() => {
-      scrollByStep("right");
+      container.scrollBy({
+        left: STEP,
+        behavior: "smooth",
+      });
+
+      // invisible reset when reaching midpoint
+      if (container.scrollLeft >= totalWidth) {
+        setTimeout(() => {
+          container.scrollLeft -= totalWidth;
+        }, 500);
+      }
     }, AUTO_SCROLL_DELAY);
 
     return () => clearInterval(interval);
@@ -80,7 +82,7 @@ export default function RecentProjects() {
 
   return (
     <section className="w-full py-20 bg-white">
-      <div className="max-w-330 mx-auto px-4">
+      <div className="max-w-[1320px] mx-auto px-4">
 
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
@@ -89,7 +91,7 @@ export default function RecentProjects() {
               Charging Solution
             </span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1a1a1a]">
-              Recent projects
+              Recent Projects
             </h2>
           </div>
 
@@ -119,30 +121,27 @@ export default function RecentProjects() {
         {/* Slider */}
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory"
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-          }}
+          className="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth"
+          style={{ scrollbarWidth: "none" }}
         >
-          {infiniteProjects.map((proj, index) => (
+          {infiniteProjects.map((project, index) => (
             <div
               key={index}
-              className="relative shrink-0 w-103.75 h-125 rounded-[40px] overflow-hidden group snap-start"
+              className="relative shrink-0 w-[415px] h-[500px] rounded-[40px] overflow-hidden group snap-start"
             >
               <img
-                src={proj.img}
-                alt={proj.title}
+                src={project.img}
+                alt={project.title}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
 
               <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
-                <div className="bg-white rounded-[25px] p-6 shadow-xl transform translate-y-[120%] group-hover:translate-y-0 transition duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                <div className="bg-white rounded-[25px] p-6 shadow-xl translate-y-[120%] group-hover:translate-y-0 transition duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]">
                   <span className="text-[11px] font-bold text-green-600 tracking-widest uppercase">
-                    {proj.tag}
+                    {project.tag}
                   </span>
                   <h3 className="text-xl font-bold text-[#1a1a1a]">
-                    {proj.title}
+                    {project.title}
                   </h3>
                 </div>
               </div>
@@ -151,14 +150,11 @@ export default function RecentProjects() {
         </div>
 
         {/* Hide scrollbar (webkit) */}
-        <style>
-          {`
-            div::-webkit-scrollbar {
-              display: none;
-            }
-          `}
-        </style>
-
+        <style>{`
+          div::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
       </div>
     </section>
   );
