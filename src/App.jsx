@@ -5,6 +5,7 @@ import RecentProjects from "./components/recentProjects";
 import EnergyProgress from "./components/EnergyProgress";
 import WhyChooseUs from "./components/WhyChooseUs";
 import AppCTA from "./components/AppCTA";
+import HomeSlider from "./components/HomeSlider";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <NavBar />
       <Home />
       <ChargingSolutions/>
+      <HomeSlider />
       <RecentProjects />
       <EnergyProgress />
       <WhyChooseUs />
