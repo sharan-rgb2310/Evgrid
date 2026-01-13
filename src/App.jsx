@@ -8,6 +8,7 @@ import AppCTA from "./components/AppCTA";
 import HomeSlider from "./components/HomeSlider";
 import Review from "./components/Review";
 import NeedHelp from "./components/NeedHelp";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
       <AppCTA />
       <Review />
       <NeedHelp/>
+      <Footer/>
 
     </div>
   );
