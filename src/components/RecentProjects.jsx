@@ -1,21 +1,15 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import picture1 from "../images/project1.png";
 import picture2 from "../images/project2.png";
 import picture3 from "../images/project3.png";
-import picture4 from "../images/project1.png";
-import picture5 from "../images/project2.png";
 
-/* ----------------------------------
-   Config helpers
------------------------------------ */
+const CARD_WIDTH = 415;
 const CARD_GAP = 24;
-const AUTO_SCROLL_DELAY = 3500;
+const STEP = CARD_WIDTH + CARD_GAP;
+const SPEED = 0.5; // px per frame
 
-/* ----------------------------------
-   Data
------------------------------------ */
 const projects = [
   { id: 1, tag: "ECO FUEL", title: "Bikes & Cars", img: picture1 },
   { id: 2, tag: "EV CARS", title: "Service & Repair", img: picture2 },
@@ -24,74 +18,59 @@ const projects = [
   { id: 5, tag: "EV STATION", title: "Benefits EV-Car", img: picture2 },
 ];
 
-const infiniteProjects = [...projects, ...projects];
-
-/* ----------------------------------
-   Component
------------------------------------ */
 export default function RecentProjects() {
-  const scrollRef = useRef(null);
+  const containerRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const [offset, setOffset] = useState(0);
+  const rafRef = useRef(null);
 
-  const getCardWidth = () => {
-    if (window.innerWidth < 640) return window.innerWidth - 48; // mobile
-    if (window.innerWidth < 1024) return 360; // tablet
-    return 415; // desktop
-  };
+  const totalWidth = STEP * projects.length;
 
-  /* ----------------------------------
-     Scroll helpers
-  ----------------------------------- */
-  const scrollByStep = (direction = "right") => {
-    const container = scrollRef.current;
-    if (!container) return;
-
-    const cardWidth = getCardWidth();
-    const STEP = cardWidth + CARD_GAP;
-    const totalWidth = STEP * projects.length;
-
-    const offset = direction === "left" ? -STEP : STEP;
-
-    container.scrollBy({ left: offset, behavior: "smooth" });
-
-    if (direction === "left" && container.scrollLeft <= 0) {
-      container.scrollLeft += totalWidth;
-    }
-  };
-
-  /* ----------------------------------
-     Auto scroll (desktop only)
-  ----------------------------------- */
+  // Auto scroll using transform
   useEffect(() => {
-    if (window.innerWidth < 768) return; // disable on mobile
+    const autoScroll = () => {
+      setOffset((prev) => {
+        let next = prev + SPEED;
+        if (next >= totalWidth) next -= totalWidth; // seamless reset
+        return next;
+      });
+      rafRef.current = requestAnimationFrame(autoScroll);
+    };
 
-    const container = scrollRef.current;
-    if (!container) return;
+    rafRef.current = requestAnimationFrame(autoScroll);
 
-    const cardWidth = getCardWidth();
-    const STEP = cardWidth + CARD_GAP;
-    const totalWidth = STEP * projects.length;
-
-    const interval = setInterval(() => {
-      container.scrollBy({ left: STEP, behavior: "smooth" });
-
-      if (container.scrollLeft >= totalWidth) {
-        setTimeout(() => {
-          container.scrollLeft -= totalWidth;
-        }, 500);
-      }
-    }, AUTO_SCROLL_DELAY);
-
-    return () => clearInterval(interval);
+    return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  return (
-    <section className="w-full py-16 md:py-20 bg-white">
-      <div className="max-w-330 mx-auto px-4">
+  // Manual scroll buttons
+  const scrollByStep = (direction) => {
+    setOffset((prev) => {
+      let next = direction === "left" ? prev - STEP : prev + STEP;
+      if (next >= totalWidth) next -= totalWidth;
+      if (next < 0) next += totalWidth;
+      return next;
+    });
+  };
 
+  // duplicate list for seamless effect
+  const infiniteProjects = [...projects, ...projects];
+
+  return (
+    <section className="w-full py-20 bg-white overflow-hidden">
+      <div className="max-w-[1320px] mx-auto px-4">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
           <div>
-            <span className="text-green-600 text-[13px] font-bold tracking-[0.15em] uppercase block mb-3">
+            <span className="flex items-center gap-2 text-green-600 text-[13px] font-bold tracking-[0.15em] uppercase mb-3">
+              <svg
+                width="14"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="text-green-600"
+              >
+                <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
+              </svg>
               Charging Solution
             </span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1a1a1a]">
@@ -101,10 +80,11 @@ export default function RecentProjects() {
 
           <div className="flex items-center gap-6">
             <p className="hidden md:block max-w-md text-gray-500">
-              There are many variations of passages of Lorem Ipsum available.
+              There are many variations of passages of Lorem Ipsum available,
+              but the majority have suffered alteration.
             </p>
 
-            <div className="hidden md:flex gap-3">
+            <div className="flex gap-3">
               <button
                 onClick={() => scrollByStep("left")}
                 className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-green-600 hover:text-white transition"
@@ -123,44 +103,41 @@ export default function RecentProjects() {
 
         {/* Slider */}
         <div
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto md:snap-x md:snap-mandatory scroll-smooth"
-          style={{ scrollbarWidth: "none" }}
+          ref={containerRef}
+          className="relative w-full overflow-hidden"
         >
-          {infiniteProjects.map((project, index) => (
-            <div
-              key={index}
-              className="
-                relative shrink-0
-                w-[calc(100vw-48px)]
-                sm:w-90
-                lg:w-103.75
-                h-[380px] sm:h-110 lg:h-125
-                rounded-[32px] lg:rounded-[40px]
-                overflow-hidden group md:snap-start
-              "
-            >
-              <img
-                src={project.img}
-                alt={project.title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-
-              <div className="absolute bottom-6 left-6 right-6">
-                <div className="bg-white rounded-[22px] p-5 shadow-xl md:translate-y-[120%] md:group-hover:translate-y-0 transition duration-500">
-                  <span className="text-[11px] font-bold text-green-600 tracking-widest uppercase">
-                    {project.tag}
-                  </span>
-                  <h3 className="text-lg font-bold text-[#1a1a1a]">
-                    {project.title}
-                  </h3>
+          <div
+            ref={wrapperRef}
+            className="flex gap-6"
+            style={{
+              transform: `translateX(-${offset}px)`,
+              transition: "transform 0s linear",
+            }}
+          >
+            {infiniteProjects.map((proj, index) => (
+              <div
+                key={index}
+                className="relative shrink-0 w-[415px] h-[500px] rounded-[40px] overflow-hidden group"
+              >
+                <img
+                  src={proj.img}
+                  alt={proj.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute bottom-6 left-6 right-6 pointer-events-none">
+                  <div className="bg-white rounded-[25px] p-6 shadow-xl translate-y-[120%] group-hover:translate-y-0 transition duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                    <span className="text-[11px] font-bold text-green-600 tracking-widest uppercase">
+                      {proj.tag}
+                    </span>
+                    <h3 className="text-xl font-bold text-[#1a1a1a]">
+                      {proj.title}
+                    </h3>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-
-        <style>{`div::-webkit-scrollbar{display:none}`}</style>
       </div>
     </section>
   );
