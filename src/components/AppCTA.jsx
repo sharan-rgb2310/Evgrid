@@ -18,7 +18,7 @@ export default function AppCTA() {
         >
           <img
             src={appImgLeft}
-            className="w-[240px] rounded-2xl rotate-[-6deg]
+            className="w-60 rounded-2xl -rotate-6
                        drop-shadow-[0_30px_40px_rgba(0,0,0,0.65)]"
             alt="Left app"
           />
@@ -32,7 +32,7 @@ export default function AppCTA() {
         >
           <img
             src={appImgRight}
-            className="w-[260px] rounded-2xl rotate-6
+            className="w-65 rounded-2xl rotate-6
                        drop-shadow-[0_36px_48px_rgba(0,0,0,0.7)]"
             alt="Right app"
           />
@@ -46,7 +46,7 @@ export default function AppCTA() {
             animate={{ y: [0, -14, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             src={appImgLeft}
-            className="w-[160px] rounded-xl rotate-[-4deg]
+            className="w-40 rounded-xl rotate-[-4deg]
                        drop-shadow-[0_20px_28px_rgba(0,0,0,0.6)]"
             alt="Mobile top app"
           />
@@ -94,7 +94,7 @@ export default function AppCTA() {
             animate={{ y: [16, 0, 16] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             src={appImgRight}
-            className="w-[170px] rounded-xl rotate-[4deg]
+            className="w-42.5 rounded-xl rotate-[4deg]
                        drop-shadow-[0_24px_34px_rgba(0,0,0,0.65)]"
             alt="Mobile bottom app"
           />
