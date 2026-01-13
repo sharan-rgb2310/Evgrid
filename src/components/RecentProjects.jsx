@@ -80,7 +80,7 @@ export default function RecentProjects() {
 
   return (
     <section className="w-full py-20 bg-white">
-      <div className="max-w-[1320px] mx-auto px-4">
+      <div className="max-w-330 mx-auto px-4">
 
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
@@ -128,7 +128,7 @@ export default function RecentProjects() {
           {infiniteProjects.map((proj, index) => (
             <div
               key={index}
-              className="relative shrink-0 w-[415px] h-[500px] rounded-[40px] overflow-hidden group snap-start"
+              className="relative shrink-0 w-103.75 h-125 rounded-[40px] overflow-hidden group snap-start"
             >
               <img
                 src={proj.img}

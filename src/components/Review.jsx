@@ -3,141 +3,158 @@ import { ChevronLeft, ChevronRight, Zap } from "lucide-react";
 import { RiDoubleQuotesR } from "react-icons/ri";
 
 const reviews = [
-  {
-    name: "Parsons William",
-    role: "CO FOUNDER",
-    rating: 5,
-    text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent",
-  },
-  {
-    name: "Ariana Green",
-    role: "SATISFIED CLIENT",
-    rating: 5,
-    text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent",
-  },
-  {
-    name: "Justin Aria",
-    role: "CUSTOMER",
-    rating: 5,
-    text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent",
-  },
-  {
-    name: "Hazel Jenkins",
-    role: "CEO & FOUNDER",
-    rating: 5,
-    text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent",
-  },
-  {
-    name: "Dylan Wang",
-    role: "MANAGER",
-    rating: 4,
-    text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent",
-  },
-  {
-    name: "Emma Brown",
-    role: "CLIENT",
-    rating: 5,
-    text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent",
-  },
-];
-
-// clones for infinite loop
-const slides = [
-  reviews[reviews.length - 1],
-  ...reviews,
-  reviews[0],
+  { name: "Parsons William", role: "CO FOUNDER", rating: 5, text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent." },
+  { name: "Ariana Green", role: "SATISFIED CLIENT", rating: 5, text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent." },
+  { name: "Justin Aria", role: "CUSTOMER", rating: 5, text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent." },
+  { name: "Hazel Jenkins", role: "CEO & FOUNDER", rating: 5, text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent." },
+  { name: "Dylan Wang", role: "MANAGER", rating: 4, text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent." },
+  { name: "Emma Brown", role: "CLIENT", rating: 5, text: "I would recommend practitioners at this center to everyone! They are great to work with and are excellent." },
 ];
 
 export default function Review() {
   const sliderRef = useRef(null);
   const intervalRef = useRef(null);
 
-  const [index, setIndex] = useState(1);
-  const [autoPlay, setAutoPlay] = useState(true);
+  const startX = useRef(0);
+  const currentX = useRef(0);
+  const isDragging = useRef(false);
+
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [index, setIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
+  const [isPaused, setIsPaused] = useState(false); // Controls autoplay pause
 
-  const isDesktop = window.innerWidth >= 1024;
-  const cardsPerView = isDesktop ? 3 : 1;
-  const slideWidth = 100 / cardsPerView;
-
-  const goTo = (i) => {
-    setIsAnimating(true);
-    setIndex(i);
-  };
-
-  const next = () => goTo(index + 1);
-  const prev = () => goTo(index - 1);
-
-  // autoplay
+  // Update isDesktop on resize
   useEffect(() => {
-    if (!autoPlay) return;
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 1024);
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
+
+  const cardsPerView = isDesktop ? 3 : 1;
+  const totalSlides = reviews.length;
+  const slideWidth = 100 / cardsPerView;
+  
+  // Extended slides for infinite loop (desktop: 3 extra, mobile: 2 extra)
+  const slides = !isDesktop
+    ? [reviews[totalSlides - 1], ...reviews, reviews[0]]
+    : [...reviews, reviews[0], reviews[1], reviews[2]];
+
+  /* ---------- INFINITE AUTOPLAY ---------- */
+  useEffect(() => {
+    if (!isAnimating || isPaused) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
 
     intervalRef.current = setInterval(() => {
-      next();
-    }, 5000);
+      setIndex((prevIndex) => {
+        const nextIndex = prevIndex + 1;
+        
+        // Infinite loop reset
+        if (nextIndex >= totalSlides) {
+          // Instant reset for seamless loop
+          setIsAnimating(false);
+          setTimeout(() => {
+            setIndex(0);
+            requestAnimationFrame(() => setIsAnimating(true));
+          }, 50);
+          return 0;
+        }
+        return nextIndex;
+      });
+    }, 4000); // 4 seconds interval
 
-    return () => clearInterval(intervalRef.current);
-  }, [index, autoPlay]);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isPaused, isAnimating, totalSlides]);
 
-  // infinite reset WITHOUT animation
-  useEffect(() => {
-    if (index === slides.length - 1) {
-      setTimeout(() => {
-        setIsAnimating(false);
-        setIndex(1);
-      }, 1200);
-    }
+  /* ---------- NAVIGATION ---------- */
+  const next = () => {
+    setIsPaused(true); // Pause autoplay on user interaction
+    setIndex((p) => {
+      const nextIdx = p + 1;
+      return nextIdx >= totalSlides ? 0 : nextIdx; // Infinite loop
+    });
+  };
 
-    if (index === 0) {
-      setTimeout(() => {
-        setIsAnimating(false);
-        setIndex(slides.length - 2);
-      }, 1200);
-    }
-  }, [index]);
+  const prev = () => {
+    setIsPaused(true); // Pause autoplay on user interaction
+    setIndex((p) => {
+      const prevIdx = p - 1;
+      return prevIdx < 0 ? totalSlides - 1 : prevIdx; // Infinite loop
+    });
+  };
 
-  // re-enable animation after jump
+  // Re-enable animation
   useEffect(() => {
     if (!isAnimating) {
-      requestAnimationFrame(() => {
-        setIsAnimating(true);
-      });
+      requestAnimationFrame(() => setIsAnimating(true));
     }
   }, [isAnimating]);
 
-  const manualNav = (dir) => {
-    setAutoPlay(false);
-    dir === "next" ? next() : prev();
+  /* ---------- DRAG (mobile + small screens) ---------- */
+  const onStart = (x) => {
+    if (isDesktop) return;
+    setIsPaused(true); // Pause autoplay on touch
+    isDragging.current = true;
+    startX.current = x;
+  };
+
+  const onMove = (x) => {
+    if (!isDragging.current) return;
+    currentX.current = x;
+  };
+
+  const onEnd = () => {
+    if (!isDragging.current) return;
+    const diff = startX.current - currentX.current;
+
+    if (diff > 50) next();
+    if (diff < -50) prev();
+
+    isDragging.current = false;
   };
 
   return (
     <section className="py-20 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <div className="flex items-center justify-between mb-12">
+        <div className="flex justify-between mb-12">
           <div>
-            <div className="flex items-center gap-2 text-green-500 font-medium mb-2">
-              <Zap size={16} />
-              <span>Feedback</span>
+            <div className="flex items-center gap-2 text-green-500 mb-2">
+              <Zap size={16} /> Feedback
             </div>
-            <h2 className="text-4xl font-bold">
-              Hear from clients.
-            </h2>
+            <h2 className="text-4xl font-bold">Hear from clients.</h2>
           </div>
 
-          <div className="hidden md:flex gap-4">
-            <button
-              onClick={() => manualNav("prev")}
-              className="w-12 h-12 rounded-full border-2 border-green-500 text-green-500 flex items-center justify-center hover:bg-green-500 hover:text-white transition"
+          {/* Desktop buttons */}
+          <div className="hidden md:flex gap-4 items-center">
+            <button 
+              onClick={prev} 
+              className="w-14 h-14 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white rounded-full transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              disabled={isPaused && index <= 0}
             >
-              <ChevronLeft />
+              <ChevronLeft size={20} />
             </button>
-            <button
-              onClick={() => manualNav("next")}
-              className="w-12 h-12 rounded-full border-2 border-green-500 text-green-500 flex items-center justify-center hover:bg-green-500 hover:text-white transition"
+            <button 
+              onClick={next} 
+              className="w-14 h-14 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white rounded-full transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              disabled={isPaused && index >= totalSlides - cardsPerView}
             >
-              <ChevronRight />
+              <ChevronRight size={20} />
             </button>
+            {/* Autoplay indicator */}
+            <div className={`w-3 h-3 rounded-full transition-colors ${
+              !isPaused ? 'bg-green-500 animate-pulse' : 'bg-gray-300'
+            }`} />
           </div>
         </div>
 
@@ -146,49 +163,39 @@ export default function Review() {
           <div
             ref={sliderRef}
             className="flex"
+            onTouchStart={(e) => onStart(e.touches[0].clientX)}
+            onTouchMove={(e) => onMove(e.touches[0].clientX)}
+            onTouchEnd={onEnd}
+            onMouseDown={(e) => onStart(e.clientX)}
+            onMouseMove={(e) => onMove(e.clientX)}
+            onMouseUp={onEnd}
+            onMouseLeave={onEnd}
             style={{
               transform: `translateX(-${index * slideWidth}%)`,
-              transition: isAnimating
-                ? "transform 1.2s ease-in-out"
-                : "none",
+              transition: isAnimating ? "transform 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)" : "none",
+              cursor: !isDesktop ? "grab" : "default",
             }}
           >
             {slides.map((item, i) => (
-              <div
-                key={i}
-                className="w-full lg:w-1/3 shrink-0 px-4"
-              >
-                <div className="bg-white rounded-3xl p-10 shadow-sm relative">
-                  {/* Quote icon */}
-                  <div className="absolute top-6 right-6 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white text-2xl">
-                    <RiDoubleQuotesR />
+              <div key={i} className="w-full lg:w-1/3 shrink-0 px-4">
+                <div className="bg-white p-10 rounded-3xl relative shadow-xl hover:shadow-2xl transition-all duration-300">
+                  <div className="absolute top-6 right-6 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg">
+                    <RiDoubleQuotesR size={24} />
                   </div>
 
-                  <h3 className="font-semibold text-lg">
-                    {item.name}
-                  </h3>
-                  <p className="text-green-500 text-sm tracking-widest mt-1">
-                    {item.role}
-                  </p>
+                  <h3 className="font-semibold text-xl mb-1 leading-tight">{item.name}</h3>
+                  <p className="text-green-500 text-sm font-medium mb-4 uppercase tracking-wide">{item.role}</p>
 
-                  <div className="flex gap-1 mt-5">
-                    {[...Array(5)].map((_, star) => (
-                      <span
-                        key={star}
-                        className={`text-xl ${
-                          star < item.rating
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      >
+                  <div className="flex mb-6">
+                    {[...Array(5)].map((_, s) => (
+                      <span key={s} className={s < item.rating ? "text-yellow-400 text-xl" : "text-gray-300 text-xl"}>
                         ★
                       </span>
                     ))}
                   </div>
 
-                  <p className="mt-6 text-gray-700 italic leading-relaxed">
-                    “{item.text}”
-                  </p>
+                  {/* Changed text-gray-700 to text-black */}
+                  <p className="italic text-black text-lg leading-relaxed font-light">"{item.text}"</p>
                 </div>
               </div>
             ))}
