@@ -22,7 +22,7 @@ export default function Review() {
   const [isDesktop, setIsDesktop] = useState(false);
   const [index, setIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
-  const [isPaused, setIsPaused] = useState(false); // Controls autoplay pause
+  const [isPaused, setIsPaused] = useState(false);
 
   // Update isDesktop on resize
   useEffect(() => {
@@ -36,7 +36,6 @@ export default function Review() {
   const totalSlides = reviews.length;
   const slideWidth = 100 / cardsPerView;
   
-  // Extended slides for infinite loop (desktop: 3 extra, mobile: 2 extra)
   const slides = !isDesktop
     ? [reviews[totalSlides - 1], ...reviews, reviews[0]]
     : [...reviews, reviews[0], reviews[1], reviews[2]];
@@ -55,9 +54,7 @@ export default function Review() {
       setIndex((prevIndex) => {
         const nextIndex = prevIndex + 1;
         
-        // Infinite loop reset
         if (nextIndex >= totalSlides) {
-          // Instant reset for seamless loop
           setIsAnimating(false);
           setTimeout(() => {
             setIndex(0);
@@ -67,7 +64,7 @@ export default function Review() {
         }
         return nextIndex;
       });
-    }, 4000); // 4 seconds interval
+    }, 4000);
 
     return () => {
       if (intervalRef.current) {
@@ -78,32 +75,31 @@ export default function Review() {
 
   /* ---------- NAVIGATION ---------- */
   const next = () => {
-    setIsPaused(true); // Pause autoplay on user interaction
+    setIsPaused(true);
     setIndex((p) => {
       const nextIdx = p + 1;
-      return nextIdx >= totalSlides ? 0 : nextIdx; // Infinite loop
+      return nextIdx >= totalSlides ? 0 : nextIdx;
     });
   };
 
   const prev = () => {
-    setIsPaused(true); // Pause autoplay on user interaction
+    setIsPaused(true);
     setIndex((p) => {
       const prevIdx = p - 1;
-      return prevIdx < 0 ? totalSlides - 1 : prevIdx; // Infinite loop
+      return prevIdx < 0 ? totalSlides - 1 : prevIdx;
     });
   };
 
-  // Re-enable animation
   useEffect(() => {
     if (!isAnimating) {
       requestAnimationFrame(() => setIsAnimating(true));
     }
   }, [isAnimating]);
 
-  /* ---------- DRAG (mobile + small screens) ---------- */
+  /* ---------- DRAG ---------- */
   const onStart = (x) => {
     if (isDesktop) return;
-    setIsPaused(true); // Pause autoplay on touch
+    setIsPaused(true);
     isDragging.current = true;
     startX.current = x;
   };
@@ -132,29 +128,23 @@ export default function Review() {
             <div className="flex items-center gap-2 text-green-500 mb-2">
               <Zap size={16} /> Feedback
             </div>
-            <h2 className="text-4xl font-bold">Hear from clients.</h2>
+            <h2 className="text-5xl font-bold">Hear from clients.</h2>
           </div>
 
-          {/* Desktop buttons */}
+          {/* Desktop buttons - REMOVED autoplay indicator */}
           <div className="hidden md:flex gap-4 items-center">
             <button 
               onClick={prev} 
               className="w-14 h-14 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white rounded-full transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              disabled={isPaused && index <= 0}
             >
               <ChevronLeft size={20} />
             </button>
             <button 
               onClick={next} 
               className="w-14 h-14 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white rounded-full transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              disabled={isPaused && index >= totalSlides - cardsPerView}
             >
               <ChevronRight size={20} />
             </button>
-            {/* Autoplay indicator */}
-            <div className={`w-3 h-3 rounded-full transition-colors ${
-              !isPaused ? 'bg-green-500 animate-pulse' : 'bg-gray-300'
-            }`} />
           </div>
         </div>
 
@@ -194,7 +184,6 @@ export default function Review() {
                     ))}
                   </div>
 
-                  {/* Changed text-gray-700 to text-black */}
                   <p className="italic text-black text-lg leading-relaxed font-light">"{item.text}"</p>
                 </div>
               </div>
