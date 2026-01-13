@@ -1,74 +1,97 @@
 import { motion } from "framer-motion";
-import { FaApple, FaGooglePlay } from "react-icons/fa";
-// Replace with your actual image paths
-import appImgLeft from "../images/img1.png"; 
-import appImgRight from "../images/img2.png";
+import aboutImg from "../images/aboutImg.png"; // Replace with your car image path
 
-export default function AppCTA() {
+const CircularProgress = ({ percentage, label }) => {
+  // SVG Circle Logic
+  const radius = 45;
+  const circumference = 2 * Math.PI * radius;
+
   return (
-    <section className="px-4 md:px-10 py-12 bg-white font-sans">
-      <div className="max-w-7xl mx-auto bg-[#0a0a0a] rounded-[60px] p-10 md:p-24 overflow-hidden relative">
-        <div className="grid md:grid-cols-2 gap-10 items-center">
-          
-          {/* Left Side: Content */}
-          <div className="text-white space-y-8 z-10">
-            <h2 className="text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight">
-              Find charging station on the our app
-            </h2>
-            <p className="text-gray-400 text-lg md:text-xl max-w-md">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ntium volum deleniti atque corrupti quos.
-            </p>
-            
-            <div className="flex flex-wrap gap-4">
-              {/* App Store Button */}
-              <button className="flex items-center gap-3 bg-white/5 border border-white/10 px-8 py-4 rounded-2xl hover:bg-white/10 transition group">
-                <FaApple size={32} className="text-white" /> 
-                <div className="text-left">
-                  <div className="text-[10px] uppercase opacity-60 font-medium">Download on the</div>
-                  <div className="font-bold text-lg leading-tight">App Store</div>
-                </div>
-              </button>
+    <div className="flex items-center gap-5">
+      <div className="relative w-24 h-24 flex items-center justify-center">
+        {/* SVG Container */}
+        <svg className="w-full h-full transform -rotate-90">
+          {/* Background Outer Ring */}
+          <circle
+            cx="48"
+            cy="48"
+            r={radius}
+            stroke="#e5e7eb"
+            strokeWidth="2"
+            fill="transparent"
+          />
+          {/* Animated Green Progress Stroke */}
+          <motion.circle
+            cx="48"
+            cy="48"
+            r={radius}
+            stroke="#4ade80" // Green-400
+            strokeWidth="2"
+            fill="transparent"
+            strokeDasharray={circumference}
+            initial={{ strokeDashoffset: circumference }}
+            whileInView={{
+              strokeDashoffset: circumference - (percentage / 100) * circumference,
+            }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            strokeLinecap="round"
+          />
+        </svg>
 
-              {/* Google Play Button */}
-              <button className="flex items-center gap-3 bg-[#76b82a] px-8 py-4 rounded-2xl hover:bg-[#86d130] transition shadow-lg shadow-green-900/20">
-                <FaGooglePlay size={28} className="text-white" /> 
-                <div className="text-left text-white">
-                  <div className="text-[10px] uppercase opacity-90 font-medium">Download on the</div>
-                  <div className="font-bold text-lg leading-tight">Google Play</div>
-                </div>
-              </button>
-            </div>
-          </div>
+        {/* Solid Green Center Circle */}
+        <div className="absolute inset-2 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
+          <span className="text-white font-bold text-lg">{percentage}%</span>
+        </div>
+      </div>
 
-          {/* Right Side: Animated Mockups */}
-          <div className="relative h-[500px] md:h-[650px] flex items-center justify-center">
-            {/* Background Phone (Left-aligned in the column) */}
-            <motion.div 
-              animate={{ y: [0, -25, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-0 w-[240px] md:w-[320px] z-10"
-            >
-              <img 
-                src={appImgLeft} 
-                className="w-full drop-shadow-2xl" 
-                alt="App Statistics" 
-              />
-            </motion.div>
+      {/* Label on the Right */}
+      <div className="max-w-30">
+        <p className="text-xl font-bold leading-tight text-gray-800">{label}</p>
+      </div>
+    </div>
+  );
+};
 
-            {/* Foreground Phone (Right-aligned and rotated) */}
-            <motion.div 
-              animate={{ y: [30, 5, 30] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute right-[-20px] md:right-[-40px] top-20 w-[260px] md:w-[350px] z-20"
-            >
-              <img 
-                src={appImgRight} 
-                className="w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.6)] rotate-[8deg]" 
-                alt="App Map View" 
-              />
-            </motion.div>
-          </div>
-          
+export default function EnergyProgress() {
+  return (
+    <section className="max-w-7xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-16 items-center">
+      {/* Left Side: Image with entrance animation */}
+      <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="relative"
+      >
+        <img
+          src={aboutImg}
+          alt="Electric Car"
+          className="w-full h-auto rounded-3xl"
+        />
+      </motion.div>
+
+      {/* Right Side: Content and Progress */}
+      <div className="space-y-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold leading-tight text-gray-900">
+            More than 1500 charging stations & growing big!!
+          </h2>
+          <p className="mt-6 text-gray-500 leading-relaxed">
+            There are many variations of passages of Lorem Ipsum available, but
+            the majority have suffered alteration in some form, by injected
+            humour.
+          </p>
+        </motion.div>
+
+        {/* Circular Progress Container */}
+        <div className="flex flex-col sm:flex-row gap-10 pt-4">
+          <CircularProgress percentage={87} label="Clients Satisfactions" />
+          <CircularProgress percentage={87} label="Work Experiences" />
         </div>
       </div>
     </section>
