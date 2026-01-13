@@ -7,6 +7,7 @@ import WhyChooseUs from "./components/WhyChooseUs";
 import AppCTA from "./components/AppCTA";
 import HomeSlider from "./components/HomeSlider";
 import Review from "./components/Review";
+import NeedHelp from "./components/NeedHelp";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
       <WhyChooseUs />
       <AppCTA />
       <Review />
+      <NeedHelp/>
 
     </div>
   );
