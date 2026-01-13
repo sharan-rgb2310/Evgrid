@@ -9,6 +9,7 @@ import HomeSlider from "./components/HomeSlider";
 import Review from "./components/Review";
 import NeedHelp from "./components/NeedHelp";
 import Footer from "./components/Footer";
+import Posts from "./components/Posts";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
       <AppCTA />
       <Review />
       <NeedHelp/>
+      <Posts/>
       <Footer/>
 
     </div>

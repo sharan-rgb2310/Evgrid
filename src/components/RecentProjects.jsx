@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import picture1 from "../images/project1.png";
 import picture2 from "../images/project2.png";
 import picture3 from "../images/project3.png";
+import picture4 from "../images/project1.png";
+import picture5 from "../images/project2.png";
 
 const CARD_WIDTH = 415;
 const CARD_GAP = 24;
