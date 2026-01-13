@@ -46,7 +46,7 @@ export default function NavBar() {
             </button>
           ))}
 
-          <button className="ml-3 flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-full font-semibold transition">
+          <button className="ml-3 flex items-center gap-2 bg-green-500 hover:bg-black text-white px-5 py-2 rounded-full font-semibold transition">
             Book Consult
             <ArrowUpRight size={18} />
           </button>

@@ -82,7 +82,7 @@ export default function Home() {
             {slides[index].desc}
           </p>
 
-          <button className="btn-anim mt-6 flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-900">
+          <button className="btn-anim mt-6 flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-black">
             Talk to an expert
             <ArrowUpRight size={18} />
           </button>
