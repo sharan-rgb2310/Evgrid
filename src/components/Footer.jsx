@@ -1,7 +1,15 @@
 import { FaFacebookF, FaXTwitter, FaInstagram, FaYoutube } from "react-icons/fa6"
 import { HiArrowUpRight } from "react-icons/hi2"
+import { useNavigate } from "react-router-dom"
 
 export default function Footer() {
+  const navigate = useNavigate()
+
+  const handleNavigate = (path) => {
+    navigate(path)
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
   return (
     <footer
       className="relative text-white"
@@ -87,15 +95,23 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-5">Utility Page</h3>
             <ul className="space-y-3 text-white/70">
-              {["About Us", "Our Team", "Contact Us", "Service", "Project"].map(
-                (item) => (
-                  <li key={item}>
-                    <button className="hover:text-green-500 transition">
-                      {item}
-                    </button>
-                  </li>
-                )
-              )}
+              {[
+                { name: "Home", path: "/" },
+                { name: "About Us", path: "/about" },
+                { name: "Our Team", path: "/team" },
+                { name: "Contact Us", path: "/contact" },
+                { name: "Service", path: "/service" },
+                { name: "Project", path: "/project" },
+              ].map((item) => (
+                <li key={item.name}>
+                  <button
+                    onClick={() => handleNavigate(item.path)}
+                    className="hover:text-green-500 transition"
+                  >
+                    {item.name}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
