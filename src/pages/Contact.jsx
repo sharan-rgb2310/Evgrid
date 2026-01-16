@@ -206,7 +206,7 @@ const Contact = () => {
       {/* ================= MAP (already created by you) ================= */}
       {/* <Map /> */}
 
-      <Footer />
+      
     </>
   );
 };
