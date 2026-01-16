@@ -203,8 +203,7 @@ const Contact = () => {
         </motion.div>
       </section>
 
-      {/* ================= MAP (already created by you) ================= */}
-      {/* <Map /> */}
+      
 
       
     </>
