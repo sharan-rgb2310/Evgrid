@@ -195,7 +195,7 @@ const Contact = () => {
 
             <button
               type="button"
-              className="bg-green-500 text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-green-600 transition"
+              className="bg-green-500 text-white px-8 py-3 rounded-full flex items-center gap-2 hover:bg-black transition"
             >
               Submit Now <ArrowUpRight size={18} />
             </button>
