@@ -1,18 +1,18 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import logo from "../images/logo.jpeg";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("Home");
 
   const navLinks = [
-    "Home",
-    "About",
-    "Services",
-    "Projects",
-    "Blogs",
-    "Contact Us",
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Services", path: "/services" },
+    { name: "Projects", path: "/projects" },
+    { name: "Blogs", path: "/blogs" },
+    { name: "Contact Us", path: "/contact" },
   ];
 
   return (
@@ -21,38 +21,36 @@ export default function NavBar() {
         
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-10 h-10 rounded-full object-cover"
-          />
-          <span className="text-sm font-bold text-black">kenseipowertech</span>
+          <img src={logo} alt="logo" className="w-10 h-10 rounded-full" />
+          <span className="text-sm font-bold">kenseipowertech</span>
         </div>
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center gap-3">
           {navLinks.map((item) => (
-            <button
-              key={item}
-              onClick={() => setActive(item)}
-              className={`px-4 py-1.5 rounded-full font-medium transition
+            <NavLink
+              key={item.name}
+              to={item.path}
+              className={({ isActive }) =>
+                `px-4 py-1.5 rounded-full font-medium transition
                 ${
-                  active === item
-                    ? "border border-green-600 text-green-600 bg-transparent"
+                  isActive
+                    ? "border border-green-600 text-green-600"
                     : "text-gray-700 hover:text-green-600"
-                }`}
+                }`
+              }
             >
-              {item}
-            </button>
+              {item.name}
+            </NavLink>
           ))}
 
-          <button className="ml-3 flex items-center gap-2 bg-green-500 hover:bg-black text-white px-5 py-2 rounded-full font-semibold transition">
+          <button className="ml-3 flex items-center gap-2 bg-green-500 hover:bg-black text-white px-5 py-2 rounded-full">
             Book Consult
             <ArrowUpRight size={18} />
           </button>
         </nav>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Button */}
         <button className="md:hidden" onClick={() => setOpen(!open)}>
           {open ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -62,27 +60,22 @@ export default function NavBar() {
       {open && (
         <div className="md:hidden bg-white shadow-lg px-6 py-4 space-y-3">
           {navLinks.map((item) => (
-            <button
-              key={item}
-              onClick={() => {
-                setActive(item);
-                setOpen(false);
-              }}
-              className={`w-full text-left px-4 py-2 rounded-full font-medium transition
+            <NavLink
+              key={item.name}
+              to={item.path}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                `block px-4 py-2 rounded-full font-medium
                 ${
-                  active === item
-                    ? "border border-green-600 text-green-600 bg-transparent"
+                  isActive
+                    ? "border border-green-600 text-green-600"
                     : "text-gray-700"
-                }`}
+                }`
+              }
             >
-              {item}
-            </button>
+              {item.name}
+            </NavLink>
           ))}
-
-          <button className="w-full mt-2 flex items-center justify-center gap-2 bg-green-500 text-white py-2 rounded-full font-semibold">
-            Book Consult
-            <ArrowUpRight size={18} />
-          </button>
         </div>
       )}
     </header>
