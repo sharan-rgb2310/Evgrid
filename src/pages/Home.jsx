@@ -16,7 +16,6 @@ export default function Home() {
       <HomeSlider1 />
       <ChargingSolutions />
       <HomeSlider />
-      
       <RecentProjects />
       <EnergyProgress />
       <WhyChooseUs />
