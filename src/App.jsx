@@ -8,7 +8,6 @@ export default function App() {
   return (
     <div className="font-sans">
       <NavBar />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
