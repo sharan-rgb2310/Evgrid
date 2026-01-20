@@ -1,17 +1,24 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import logo from "../images/logo.jpeg";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [location.pathname]);
 
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
-    { name: "Projects", path: "/projects" },
-    { name: "Blogs", path: "/blogs" },
     { name: "Contact Us", path: "/contact" },
   ];
 
