@@ -106,9 +106,9 @@ const cardVariants = {
 
 export default function Services() {
   return (
-    <section className="bg-[#fcfdfd] pt-[90px]">
+    <section className="bg-[#fcfdfd] pt-22.5">
       {/* Hero Section */}
-      <div className="relative h-[320px] md:h-[400px] overflow-hidden">
+      <div className="relative h-80 md:h-100 overflow-hidden">
         <img
           src={heroImg}
           alt="Services Banner"
@@ -128,7 +128,7 @@ export default function Services() {
       </div>
 
       {/* Services Grid */}
-      <div className="max-w-[1280px] mx-auto px-6 py-20">
+      <div className="max-w-7xl mx-auto px-6 py-20">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -161,7 +161,7 @@ export default function Services() {
                 {/* Bottom Action Bar */}
                 <div className="flex items-end justify-between mt-auto">
                   {/* PNG Image Path Implementation */}
-                  <div className="w-[80px] h-[80px] flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
+                  <div className="w-20 h-20 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
                     <img 
                       src={service.image} 
                       alt={service.title} 
