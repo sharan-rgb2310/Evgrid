@@ -13,12 +13,8 @@ import service5 from "../images/service-5.png";
 import service6 from "../images/service-6.png";
 import service7 from "../images/service-7.png";
 import service8 from "../images/service-8.png";
-import service9 from "../images/service-1.png";
+import service9 from "../images/service-9.png";
 
-
-/* ----------------------------------
-   Services Data with PNG Paths
------------------------------------ */
 
 const services = [
   {
@@ -87,101 +83,91 @@ const services = [
 ];
 
 
-
-/* ----------------------------------
-   Animations
------------------------------------ */
-const containerVariants = {
-  show: { transition: { staggerChildren: 0.1 } },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  show: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.5, ease: "easeOut" } 
-  },
-};
-
 export default function Services() {
   return (
-    <section className="bg-[#fcfdfd] pt-22.5">
+    <section className="bg-[#f4f7f6] pt-24 pb-24 font-sans">
       {/* Hero Section */}
-      <div className="relative h-80 md:h-100 overflow-hidden">
-        <img
-          src={heroImg}
-          alt="Services Banner"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-white text-[40px] md:text-[56px] font-bold mb-2">
-            Services
-          </h1>
-          <nav className="flex items-center gap-2 text-white text-sm font-medium">
+      <div className="relative h-87.5 md:h-112.5 overflow-hidden mb-20">
+        <img src={heroImg} alt="Hero" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-black/45" />
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center">
+          <h1 className="text-white text-5xl md:text-7xl font-bold mb-4 tracking-tight">Services</h1>
+          <div className="flex items-center gap-2 text-white/90 text-[16px] font-medium">
             <span className="opacity-70">Evgrid</span>
-            <span className="opacity-70">&gt;</span>
-            <span className="text-green-400">Services</span>
-          </nav>
+            <span className="text-sm opacity-40"> &gt; </span>
+            <span className="text-[#50c878]">Services</span>
+          </div>
         </div>
       </div>
 
-      {/* Services Grid */}
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14">
           {services.map((service, index) => (
-            <motion.div key={index} variants={cardVariants}>
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              whileHover={{ y: -12 }} 
+              className="relative"
+            >
               <NavLink
                 to={service.path}
-                className="group relative h-full flex flex-col bg-white border border-gray-100 p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+                className="group block bg-white rounded-[45px] p-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] h-full relative overflow-visible transition-all duration-500"
               >
-                {/* Category Tag */}
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="w-2 h-2 rounded-full bg-green-500" />
-                  <span className="text-[12px] font-bold tracking-widest text-gray-500 uppercase">
+                {/* 1. Category Tag (Fixed Color) */}
+                <div className="flex items-center gap-2 mb-5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#50c878]" />
+                  <span className="text-[13px] font-extrabold tracking-[0.15em] text-[#50c878] uppercase">
                     {service.category}
                   </span>
                 </div>
 
-                {/* Content */}
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-600 transition-colors">
+                {/* 2. Title & Description (Color change removed as requested) */}
+                <h3 className="text-[24px] font-bold text-[#0f172a] mb-4">
                   {service.title}
                 </h3>
-                <p className="text-gray-600 text-[15px] leading-relaxed mb-10">
+                <p className="text-gray-500 text-[16.5px] leading-relaxed mb-12">
                   {service.desc}
                 </p>
 
-                {/* Bottom Action Bar */}
-                <div className="flex items-end justify-between mt-auto">
-                  {/* PNG Image Path Implementation */}
-                  <div className="w-20 h-20 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
-                    <img 
-                      src={service.image} 
-                      alt={service.title} 
-                      className="max-w-full max-h-full object-contain"
-                      onError={(e) => { e.target.style.display = 'none'; }} // Hides broken images
-                    />
-                  </div>
+                {/* 3. Bottom PNG Icon (Left) */}
+                <div className="w-20 h-20 opacity-90 group-hover:opacity-100 transition-opacity">
+                  <img src={service.image} alt={service.title} className="w-full h-full object-contain" />
+                </div>
 
-                  {/* Circular Arrow Button (Moves to bottom right) */}
-                  <div className="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center transition-all duration-300 group-hover:bg-green-500 group-hover:border-green-500">
-                    <ArrowUpRight
-                      size={20}
-                      className="text-gray-600 group-hover:text-white transition-colors"
-                    />
+                {/* 4. The Scooped Notch & Take-Off Arrow Animation */}
+                <div className="absolute bottom-0 right-0">
+                  <div className="relative bg-[#f4f7f6] w-28.75 h-28.75 rounded-tl-[60px] flex items-center justify-center translate-x-0.5 translate-y-0.5">
+                    
+                    {/* Corner smoothing fillers for the scoop effect */}
+                    <div className="absolute -top-7.5 right-0 w-7.5 h-7.5 bg-white rounded-br-[30px] shadow-[8px_8px_0_8px_#f4f7f6]" />
+                    <div className="absolute bottom-0 -left-7.5 w-7.5 h-7.5 bg-white rounded-br-[30px] shadow-[8px_8px_0_8px_#f4f7f6]" />
+
+                    {/* Button with Take-Off Animation */}
+                    <div className="w-17 h-17 bg-[#50c878] rounded-full flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:bg-[#0f172a]">
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        {/* Outgoing Dark Arrow */}
+                        <ArrowUpRight 
+                          className="text-[#0f172a] absolute transition-all duration-300 group-hover:translate-x-12 group-hover:-translate-y-12" 
+                          size={30} 
+                          strokeWidth={2.5} 
+                        />
+                        {/* Incoming Green Arrow */}
+                        <ArrowUpRight 
+                          className="text-[#50c878] absolute -translate-x-12 translate-y-12 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0" 
+                          size={30} 
+                          strokeWidth={2.5} 
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </NavLink>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
