@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Target, Eye, Gem, Zap, PhoneCall } from "lucide-react";
 import AppCTA from "../components/AppCTA";
+import { FaStar } from "react-icons/fa";
+import Feedback from "../components/Feedback";
+
+
 
 /* ================= IMAGES ================= */
 import heroImg from "../images/hero-contact.jpg";
@@ -121,7 +125,7 @@ const About = () => {
           <div className="relative">
             <img
               src={backgroundImg}
-              className="w-full h-[600px]  rounded-[32px]"
+              className="w-full h-150  rounded-4xl"
               alt="Charging"
             />
 
@@ -131,7 +135,7 @@ const About = () => {
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="absolute -bottom-12 right-0 w-[270px] h-[180px] rounded-2xl  shadow-2xl bg-white mb-22"
+              className="absolute -bottom-12 right-0 w-67.5 h-45 rounded-2xl  shadow-2xl bg-white mb-22"
             >
               {/* IMAGE */}
               <img
@@ -141,7 +145,7 @@ const About = () => {
               />
 
               {/* ICON INSIDE SAME CARD */}
-              <div className="absolute -top-0 -left-0 w-[120px] h-[180px] bg-green-500 rounded-xl flex items-center justify-center shadow-xl   ">
+              <div className="absolute top-0 left-0 w-30 h-45 bg-green-500 rounded-xl flex items-center justify-center shadow-xl   ">
                 {React.createElement(tabConfig[activeTab].icon, {
                   size: 40,
                   color: "white",
@@ -246,7 +250,7 @@ const About = () => {
                   <img
                     src={img}
                     alt={name}
-                    className="w-[280px] h-[380px] rounded-[32px] object-cover"
+                    className="w-70 h-95 rounded-4xl object-cover"
                   />
                   <div className="absolute bottom-4 left-4">
                     <p className="text-green-400 text-xs tracking-widest">
@@ -282,23 +286,26 @@ const About = () => {
               {brands.map((img, i) => (
                 <div
                   key={i}
-                  className="min-w-[23%] h-[150px] flex items-center justify-center rounded-3xl shadow-md bg-white grayscale hover:grayscale-0 transition"
+                  className="min-w-[23%] h-37.5 flex items-center justify-center rounded-3xl shadow-md bg-white grayscale hover:grayscale-0 transition"
                 >
                   <img
                     src={img}
-                    className="max-h-[85px] pointer-events-none"
+                    className="max-h-21.25 pointer-events-none"
                     alt="EV Brand"
                   />
                 </div>
               ))}
             </motion.div>
           </div>
-        </div>
+        </div>   
       </section>
       <AppCTA />
+      <Feedback />
     </div>
   );
 };
+
+
 
 
 export default About;
